@@ -47,4 +47,5 @@ jobs:
           delete-branch: true
           add-paths: c.json
           title: 'Update from external repo'
+          body: ''
           commit-message: 'ci: update from external repo'
