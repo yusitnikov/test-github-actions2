@@ -7,6 +7,10 @@ on:
   repository_dispatch:
     types: [chameleon-event]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
   cancel-in-progress: true
@@ -35,15 +39,12 @@ jobs:
         run: |
           mv external/c.json ./c.json
           rm -rf external
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add c.json
-          git commit -m "ci: auto-generated code" || echo "noChanges=true" >> $GITHUB_OUTPUT
 
-      - name: On changes
-        if: ${{!steps.update.outputs.noChanges}}
-        run: echo There are changes!
-
-      - name: On no changes
-        if: ${{steps.update.outputs.noChanges}}
-        run: echo There are no changes!
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: 'auto-pr'
+          delete-branch: true
+          add-paths: c.json
+          title: 'Update from external repo'
+          commit-message: 'ci: update from external repo'
