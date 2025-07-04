@@ -26,6 +26,7 @@ jobs:
           ref: main
           path: external
           fetch-depth: 0
+          sparse-checkout: c.json
 
       - name: Show my code
         run: ls -al .
