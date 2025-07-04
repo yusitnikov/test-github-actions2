@@ -21,7 +21,7 @@ jobs:
       - name: Checkout external code
         uses: actions/checkout@v4
         with:
-          repository: 'yusitnikov/test-github-action'
+          repository: 'yusitnikov/test-github-actions'
           token: '${{ secrets.TEST_ACTIONS_PAT }}'
           ref: main
           path: external
