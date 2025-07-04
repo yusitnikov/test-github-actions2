@@ -30,8 +30,20 @@ jobs:
             c.json
           sparse-checkout-cone-mode: false
 
-      - name: Show my code
-        run: ls -al .
+      - name: Update the code
+        id: update
+        run: |
+          mv external/c.json ./c.json
+          rm -rf external
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add c.json
+          git commit -m "ci: auto-generated code" || echo "noChanges=true" >> $GITHUB_OUTPUT
 
-      - name: Show external code
-        run: ls -al external
+      - name: On changes
+        if: ${{!steps.update.outputs.noChanges}}
+        run: echo There are changes!
+
+      - name: On no changes
+        if: ${{steps.update.outputs.noChanges}}
+        run: echo There are no changes!
