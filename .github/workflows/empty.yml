@@ -15,5 +15,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Empty step
-        run: echo OK
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout external code
+        uses: actions/checkout@v4
+        with:
+          repository: 'yusitnikov/test-github-action'
+          token: '${{ secrets.TEST_ACTIONS_PAT }}'
+          ref: main
+          path: external
+          fetch-depth: 0
+
+      - name: Show my code
+        run: ls -al .
+
+      - name: Show external code
+        run: ls -al external
